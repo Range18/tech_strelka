@@ -11,6 +11,14 @@ export namespace AllExceptions {
     SessionExpired = 'Session expired',
   }
 
+  export enum RolesExceptions {
+    NotFound = 'Role is not found',
+  }
+
+  export enum HousesExceptions {
+    NotFound = 'House is not found',
+  }
+
   export enum UserExceptions {
     UserNotFound = 'User is not found',
     UserAlreadyExists = 'User already exists',
