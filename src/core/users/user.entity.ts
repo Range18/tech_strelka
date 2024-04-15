@@ -10,6 +10,7 @@ import { SessionEntity } from '../session/session.entity';
 import { BaseEntity } from '#src/common/base.entity';
 import { RolesEntity } from '#src/core/roles/entity/roles.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
+import { TaskStatus } from '#src/core/task-statuses/entities/task-status.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -48,4 +49,7 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   house?: HouseEntity;
+
+  @OneToMany(() => TaskStatus, (status) => status.user, { nullable: true })
+  tasksInProgress?: TaskStatus[];
 }

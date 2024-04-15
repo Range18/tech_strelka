@@ -10,4 +10,9 @@ export class CreateHouseDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly ourValues?: string;
 }

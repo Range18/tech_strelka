@@ -11,4 +11,9 @@ export class UpdateHouseDto {
   @IsString()
   @IsOptional()
   readonly description?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  readonly ourValues?: string;
 }
