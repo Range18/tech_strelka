@@ -9,6 +9,7 @@ import {
 import { UserEntity } from '#src/core/users/user.entity';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { AssetEntity } from '#src/core/assets/entities/asset.entity';
+import { HouseEntity } from '#src/core/houses/entity/house.entity';
 
 @Entity()
 export class TaskStatus {
@@ -21,7 +22,7 @@ export class TaskStatus {
   @JoinColumn({ name: 'user' })
   user: UserEntity;
 
-  @ManyToOne(() => Task, (task) => task.usersProgress, { nullable: false })
+  @ManyToOne(() => Task, (task) => task.usersProgress)
   @JoinColumn({ name: 'task' })
   task: Task;
 
@@ -31,6 +32,12 @@ export class TaskStatus {
   })
   @JoinColumn({ name: 'asset' })
   asset?: AssetEntity;
+
+  @ManyToOne(() => HouseEntity, (house) => house.confirmations, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  house: HouseEntity;
 
   @Column({ nullable: false })
   status: string;

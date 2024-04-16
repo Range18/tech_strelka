@@ -1,1 +1,4 @@
-export type StatusType = 'Done' | 'InApprove';
+export enum StatusType {
+  Done = 'Done',
+  InApprove = 'InApprove',
+}

@@ -1,5 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { GetHouseRdo } from '#src/core/houses/rdo/get-house.rdo';
+import { UserEntity } from '#src/core/users/user.entity';
 
 export class LoggedUserRdo {
   @ApiProperty()
@@ -11,9 +13,13 @@ export class LoggedUserRdo {
   @ApiProperty()
   readonly login: string;
 
-  constructor(accessToken: string, sessionExpireAt: Date, login: string) {
+  @ApiProperty()
+  readonly house?: GetHouseRdo;
+
+  constructor(accessToken: string, sessionExpireAt: Date, user: UserEntity) {
     this.accessToken = accessToken;
     this.sessionExpireAt = sessionExpireAt;
-    this.login = login;
+    this.login = user.login;
+    this.house = user.house ? new GetHouseRdo(user.house) : undefined;
   }
 }

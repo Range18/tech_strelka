@@ -2,6 +2,7 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '#src/common/base.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { Event } from '#src/core/events/entities/event.entity';
 
 @Entity('assets')
 export class AssetEntity extends BaseEntity {
@@ -38,4 +39,7 @@ export class AssetEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   confirmation?: TaskStatus;
+
+  @OneToOne(() => Event, (event) => event.image, { nullable: true })
+  event: Event;
 }

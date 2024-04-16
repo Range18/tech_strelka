@@ -55,13 +55,14 @@ export class AuthService {
     return new LoggedUserRdo(
       session.accessToken,
       session.sessionExpireAt,
-      userEntity.login,
+      userEntity,
     );
   }
 
   async login(loginUserDto: LoginUserDto): Promise<LoggedUserRdo> {
     const user = await this.userService.findOne({
       where: { login: loginUserDto.login },
+      relations: { house: true },
     });
 
     if (!user) {
@@ -94,7 +95,7 @@ export class AuthService {
     return new LoggedUserRdo(
       session.accessToken,
       session.sessionExpireAt,
-      user.login,
+      user,
     );
   }
 

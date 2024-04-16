@@ -55,17 +55,14 @@ export class SessionService extends BaseEntityService<
       expireAt: expireAt,
     });
 
-    return {
-      accessToken: await this.tokenService.signAsync(
-        {
-          userId: payload.userId,
-          sessionId: session.sessionId,
-        } as TokenPayload,
-        { expiresIn: jwtConfig.accessExpire.value },
-      ),
-      sessionExpireAt: expireAt,
-      login: user.login,
-    };
+    return new LoggedUserRdo(
+      await this.tokenService.signAsync({
+        userId: payload.userId,
+        sessionId: session.sessionId,
+      } as TokenPayload),
+      expireAt,
+      user,
+    );
   }
 
   async refreshSession(token: string): Promise<LoggedUserRdo>;

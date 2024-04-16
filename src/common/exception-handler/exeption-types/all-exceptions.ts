@@ -21,6 +21,16 @@ export namespace AllExceptions {
 
   export enum TaskExceptions {
     NotFound = 'Task is not found',
+    TaskExpired = 'Task is expired',
+    AlreadyDone = 'Done already',
+    HouseRequired = 'User must be in house',
+  }
+
+  export enum EventExceptions {
+    NotFound = 'Event is not found',
+  }
+  export enum JustExceptions {
+    NotFound = 'Entity is not found',
   }
 
   export enum StatusExceptions {

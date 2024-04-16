@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { UserService } from '#src/core/users/user.service';
-import { ApiHeader, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { GetUserRdo } from '#src/core/users/rdo/get-user.rdo';
 import { type UserRequest } from '#src/common/types/user-request.type';
 import { User } from '#src/common/decorators/User.decorator';
@@ -13,13 +13,19 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOkResponse({ type: [GetUserRdo] })
+  @ApiQuery({ name: 'property', description: 'Одно из полей user' })
+  @ApiQuery({ name: 'order', description: 'ASC, DESC' })
   @Get()
-  async getAllUsers() {
+  async getAllUsers(
+    @Query('by') property: string,
+    @Query('order') order: string,
+  ) {
     const users = await this.userService.find({
       relations: {
         role: true,
         house: true,
       },
+      order: { [property]: order },
     });
 
     return users.map((user) => new GetUserRdo(user));
@@ -74,24 +80,29 @@ export class UserController {
     @User() user: UserRequest,
     @Body() updateUserDto: UpdateUserDto,
   ) {
+    await this.userService.updateOne(
+      {
+        where: { id: user.id },
+        relations: { role: true, house: true },
+      },
+      {
+        firstname: updateUserDto.firstname,
+        surname: updateUserDto.surname,
+        lastname: updateUserDto.lastname,
+        login: updateUserDto.login,
+        role: updateUserDto.role ? { id: updateUserDto.role } : undefined,
+        password: updateUserDto.password,
+        house: updateUserDto.houseId
+          ? { id: updateUserDto.houseId }
+          : undefined,
+      },
+    );
+
     return new GetUserRdo(
-      await this.userService.updateOne(
-        {
-          where: { id: user.id },
-          relations: { role: true, house: true },
-        },
-        {
-          firstname: updateUserDto.firstname,
-          surname: updateUserDto.surname,
-          lastname: updateUserDto.lastname,
-          login: updateUserDto.login,
-          role: updateUserDto.role ? { id: updateUserDto.role } : undefined,
-          password: updateUserDto.password,
-          house: updateUserDto.houseId
-            ? { id: updateUserDto.houseId }
-            : undefined,
-        },
-      ),
+      await this.userService.findOne({
+        where: { id: user.id },
+        relations: { role: true, house: { image: true } },
+      }),
     );
   }
 }

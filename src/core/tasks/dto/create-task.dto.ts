@@ -12,4 +12,7 @@ export class CreateTaskDto {
 
   @ApiProperty()
   readonly prize: number;
+
+  @ApiProperty({ default: false })
+  readonly isForTeam: boolean;
 }

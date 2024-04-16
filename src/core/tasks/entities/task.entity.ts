@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
 import { BaseEntity } from '#src/common/base.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 import { TaskType } from '#src/core/task-types/entities/task-type.entity';
+import { Level } from '#src/core/levels/entities/level.entity';
 
 @Entity('tasks')
 export class Task extends BaseEntity {
@@ -26,6 +28,9 @@ export class Task extends BaseEntity {
   @Column({ nullable: false })
   prize: number;
 
+  @Column({ nullable: false, default: false })
+  isForTeam: boolean;
+
   @OneToMany(() => TaskStatus, (status) => status.task, { nullable: true })
   usersProgress?: TaskStatus[];
 
@@ -33,5 +38,13 @@ export class Task extends BaseEntity {
     nullable: true,
     onDelete: 'SET NULL',
   })
+  @JoinColumn({ name: 'type' })
   type?: TaskType;
+
+  @ManyToOne(() => Level, (level) => level.tasks, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'level' })
+  level?: Level;
 }

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { TaskType } from '#src/core/task-types/entities/task-type.entity';
+import ms from 'ms';
 
 export class GetTaskRdo {
   @ApiProperty()
@@ -21,8 +22,8 @@ export class GetTaskRdo {
   @ApiProperty()
   readonly prize: number;
 
-  @ApiProperty({ type: TaskType })
-  readonly type: TaskType;
+  @ApiProperty({ nullable: true, type: TaskType })
+  readonly type?: TaskType;
 
   @ApiProperty()
   readonly createdAt: Date;
@@ -35,9 +36,15 @@ export class GetTaskRdo {
     this.title = task.title;
     this.description = task.description;
     this.expireAt = task.expireAt;
-    this.timeUntil = 'in dev todo';
+
+    if (task.expireAt) {
+      const timeUntil = task.expireAt.getTime() - Date.now();
+      this.timeUntil =
+        timeUntil <= 0 ? `Выполнение задания окончено` : ms(timeUntil);
+    }
+
     this.prize = task.prize;
-    this.type = task.type;
+    this.type = task.type ? task.type : undefined;
 
     this.createdAt = task.createdAt;
     this.updatedAt = task.updatedAt;

@@ -1,6 +1,7 @@
 import { UserEntity } from '#src/core/users/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { RolesEntity } from '#src/core/roles/entity/roles.entity';
+import { GetHouseRdo } from '#src/core/houses/rdo/get-house.rdo';
 
 export class GetUserRdo {
   @ApiProperty()
@@ -21,6 +22,12 @@ export class GetUserRdo {
   @ApiProperty({ type: () => RolesEntity })
   readonly role: RolesEntity;
 
+  @ApiProperty({ nullable: true, type: GetHouseRdo })
+  readonly house?: GetHouseRdo;
+
+  @ApiProperty()
+  readonly points: number;
+
   @ApiProperty()
   readonly updatedAt: Date;
 
@@ -34,6 +41,9 @@ export class GetUserRdo {
     this.lastname = user.lastname;
     this.login = user.login;
     this.role = user.role;
+    this.house = user.house ? new GetHouseRdo(user.house) : undefined;
+
+    this.points = user.points;
 
     this.updatedAt = user.updatedAt;
     this.createdAt = user.createdAt;

@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TaskConfirmationService } from './task-confirmation.service';
 import { CreateTaskConfirmationDto } from './dto/create-task-confirmation.dto';
 import { UpdateTaskConfirmationDto } from './dto/update-task-confirmation.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Task Status')
 @Controller('api/task-confirmation')
@@ -18,12 +21,15 @@ export class TaskConfirmationController {
   constructor(private readonly taskStatusesService: TaskConfirmationService) {}
 
   @Post()
-  async create(@Body() createTaskStatusDto: CreateTaskConfirmationDto) {
-    return await this.taskStatusesService.save({
-      task: { id: createTaskStatusDto.task },
-      user: { id: createTaskStatusDto.user },
-      status: createTaskStatusDto.status,
-    });
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createTaskConfirmationDto: CreateTaskConfirmationDto,
+  ) {
+    return this.taskStatusesService.confirmTask(
+      createTaskConfirmationDto,
+      file,
+    );
   }
 
   @Get()

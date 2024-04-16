@@ -32,6 +32,9 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: false, default: 0 })
+  points: number;
+
   @ManyToOne(() => RolesEntity, (role) => role.users, {
     nullable: false,
     onDelete: 'CASCADE',

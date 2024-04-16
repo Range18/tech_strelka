@@ -9,6 +9,7 @@ import {
 import { UserEntity } from '#src/core/users/user.entity';
 import { BaseEntity } from '#src/common/base.entity';
 import { AssetEntity } from '#src/core/assets/entities/asset.entity';
+import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 
 @Entity('houses')
 export class HouseEntity extends BaseEntity {
@@ -26,6 +27,12 @@ export class HouseEntity extends BaseEntity {
 
   @Column({ nullable: false, default: 0 })
   totalPoints: number;
+
+  @OneToMany(() => TaskStatus, (confirmation) => confirmation.house, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  confirmations?: TaskStatus[];
 
   @OneToMany(() => UserEntity, (user) => user.house, { onDelete: 'CASCADE' })
   users: UserEntity[];
