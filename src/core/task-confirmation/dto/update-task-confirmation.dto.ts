@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateTaskStatusDto {
+export class UpdateTaskConfirmationDto {
   @ApiProperty()
   status: string;
 }

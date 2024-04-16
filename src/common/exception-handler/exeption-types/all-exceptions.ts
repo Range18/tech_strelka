@@ -19,6 +19,22 @@ export namespace AllExceptions {
     NotFound = 'House is not found',
   }
 
+  export enum TaskExceptions {
+    NotFound = 'Task is not found',
+  }
+
+  export enum StatusExceptions {
+    NotFound = 'Status is not found',
+  }
+
+  export enum TaskTypeExceptions {
+    NotFound = 'Task type is not found',
+  }
+
+  export enum StorageExceptions {
+    NotFound = 'FileNotFound',
+  }
+
   export enum UserExceptions {
     UserNotFound = 'User is not found',
     UserAlreadyExists = 'User already exists',

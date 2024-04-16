@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTaskStatusDto {
+export class CreateTaskConfirmationDto {
   @ApiProperty()
   readonly task: number;
 

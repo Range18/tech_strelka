@@ -31,4 +31,9 @@ export class UpdateUserDto {
   @IsOptional()
   @ApiProperty()
   role?: number;
+
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty()
+  readonly houseId?: number;
 }

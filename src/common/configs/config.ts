@@ -9,7 +9,7 @@ export const backendServer = {
   url: function () {
     return `http${this.secure ? 's' : ''}://${this.host}:${this.port}`;
   },
-  urlValue: 'https://api.postideas.ru',
+  urlValue: 'https://technoshooter.postideas.store/',
 };
 
 export const frontendServer = {

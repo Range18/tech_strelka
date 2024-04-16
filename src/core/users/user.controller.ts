@@ -18,6 +18,7 @@ export class UserController {
     const users = await this.userService.find({
       relations: {
         role: true,
+        house: true,
       },
     });
 
@@ -33,6 +34,7 @@ export class UserController {
           where: { id },
           relations: {
             role: true,
+            house: true,
           },
         },
         true,
@@ -54,6 +56,7 @@ export class UserController {
         where: { id: user.id },
         relations: {
           role: true,
+          house: true,
         },
       }),
     );
@@ -75,13 +78,18 @@ export class UserController {
       await this.userService.updateOne(
         {
           where: { id: user.id },
-          relations: { role: true },
+          relations: { role: true, house: true },
         },
         {
           firstname: updateUserDto.firstname,
+          surname: updateUserDto.surname,
+          lastname: updateUserDto.lastname,
           login: updateUserDto.login,
-          role: { id: updateUserDto.role },
+          role: updateUserDto.role ? { id: updateUserDto.role } : undefined,
           password: updateUserDto.password,
+          house: updateUserDto.houseId
+            ? { id: updateUserDto.houseId }
+            : undefined,
         },
       ),
     );

@@ -1,4 +1,6 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateTaskTypeDto } from './create-task-type.dto';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateTaskTypeDto extends PartialType(CreateTaskTypeDto) {}
+export class UpdateTaskTypeDto {
+  @ApiProperty()
+  readonly name: string;
+}

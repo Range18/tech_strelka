@@ -8,7 +8,7 @@ import { SessionService } from '#src/core/session/session.service';
 import { TokenService } from '#src/core/token/token.service';
 import { JwtService } from '@nestjs/jwt';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
-import { TaskStatus } from '#src/core/task-statuses/entities/task-status.entity';
+import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 
 @Module({
   imports: [

@@ -6,12 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { GetTaskRdo } from '#src/core/tasks/rdo/get-task.rdo';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tasks')
 @Controller('api/tasks')
@@ -24,21 +25,33 @@ export class TasksController {
   }
 
   @Get()
-  async findAll() {
-    const tasks = await this.tasksService.find({});
+  @ApiQuery({ type: Number, name: 'type' })
+  async findAll(@Query('typeId') typeId: number) {
+    const tasks = await this.tasksService.find({
+      where: { type: typeId ? { id: typeId } : undefined },
+      relations: { type: true, usersProgress: true },
+    });
 
     return tasks.map((task) => new GetTaskRdo(task));
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return new GetTaskRdo(await this.tasksService.findOne({ where: { id } }));
+    return new GetTaskRdo(
+      await this.tasksService.findOne({
+        where: { id },
+        relations: { type: true, usersProgress: true },
+      }),
+    );
   }
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
     return new GetTaskRdo(
-      await this.tasksService.updateOne({ where: { id } }, updateTaskDto),
+      await this.tasksService.updateOne(
+        { where: { id }, relations: { type: true, usersProgress: true } },
+        updateTaskDto,
+      ),
     );
   }
 

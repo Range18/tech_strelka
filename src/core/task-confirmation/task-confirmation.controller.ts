@@ -7,18 +7,18 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { TaskStatusesService } from './task-statuses.service';
-import { CreateTaskStatusDto } from './dto/create-task-status.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { TaskConfirmationService } from './task-confirmation.service';
+import { CreateTaskConfirmationDto } from './dto/create-task-confirmation.dto';
+import { UpdateTaskConfirmationDto } from './dto/update-task-confirmation.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Task Status')
-@Controller('api/task-statuses')
-export class TaskStatusesController {
-  constructor(private readonly taskStatusesService: TaskStatusesService) {}
+@Controller('api/task-confirmation')
+export class TaskConfirmationController {
+  constructor(private readonly taskStatusesService: TaskConfirmationService) {}
 
   @Post()
-  async create(@Body() createTaskStatusDto: CreateTaskStatusDto) {
+  async create(@Body() createTaskStatusDto: CreateTaskConfirmationDto) {
     return await this.taskStatusesService.save({
       task: { id: createTaskStatusDto.task },
       user: { id: createTaskStatusDto.user },
@@ -39,7 +39,7 @@ export class TaskStatusesController {
   @Patch(':id')
   async update(
     @Param('id') id: number,
-    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @Body() updateTaskStatusDto: UpdateTaskConfirmationDto,
   ) {
     return await this.taskStatusesService.updateOne(
       { where: { id } },

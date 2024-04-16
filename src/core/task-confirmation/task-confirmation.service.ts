@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { BaseEntityService } from '#src/common/base-entity.service';
-import { TaskStatus } from '#src/core/task-statuses/entities/task-status.entity';
+import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApiException } from '#src/common/exception-handler/api-exception';
@@ -8,7 +8,7 @@ import { AllExceptions } from '#src/common/exception-handler/exeption-types/all-
 import TaskExceptions = AllExceptions.TaskExceptions;
 
 @Injectable()
-export class TaskStatusesService extends BaseEntityService<
+export class TaskConfirmationService extends BaseEntityService<
   TaskStatus,
   'TaskExceptions'
 > {

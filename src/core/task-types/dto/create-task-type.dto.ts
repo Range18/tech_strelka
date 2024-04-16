@@ -1,1 +1,6 @@
-export class CreateTaskTypeDto {}
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CreateTaskTypeDto {
+  @ApiProperty()
+  readonly name: string;
+}

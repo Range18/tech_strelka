@@ -1,6 +1,13 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { BaseEntity } from '#src/common/base.entity';
-import { TaskStatus } from '#src/core/task-statuses/entities/task-status.entity';
+import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { TaskType } from '#src/core/task-types/entities/task-type.entity';
 
 @Entity('tasks')
 export class Task extends BaseEntity {
@@ -19,6 +26,12 @@ export class Task extends BaseEntity {
   @Column({ nullable: false })
   prize: number;
 
-  @OneToOne(() => TaskStatus, (status) => status.task, { nullable: true })
-  progress?: TaskStatus;
+  @OneToMany(() => TaskStatus, (status) => status.task, { nullable: true })
+  usersProgress?: TaskStatus[];
+
+  @ManyToOne(() => TaskType, (type) => type.tasks, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  type?: TaskType;
 }

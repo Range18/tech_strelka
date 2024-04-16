@@ -45,6 +45,7 @@ export class AuthService {
       role: await this.rolesService.findOne({
         where: { name: createUserDto.role },
       }),
+      house: { id: createUserDto.houseId },
     });
 
     const session = await this.sessionService.createSession({

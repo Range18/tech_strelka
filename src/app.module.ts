@@ -8,6 +8,9 @@ import { UserModule } from '#src/core/users/user.module';
 import { RolesModule } from '#src/core/roles/roles.module';
 import { SessionModule } from '#src/core/session/session.module';
 import { HousesModule } from '#src/core/houses/houses.module';
+import { TasksModule } from '#src/core/tasks/tasks.module';
+import { AssetsModule } from '#src/core/assets/assets.module';
+import { TaskType } from '#src/core/task-types/entities/task-type.entity';
 
 @Module({
   imports: [
@@ -17,6 +20,9 @@ import { HousesModule } from '#src/core/houses/houses.module';
     RolesModule,
     SessionModule,
     HousesModule,
+    TasksModule,
+    AssetsModule,
+    TaskType,
   ],
   controllers: [AppController],
   providers: [AppService],
