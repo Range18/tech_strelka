@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { TaskType } from '#src/core/task-types/entities/task-type.entity';
 import ms from 'ms';
+import { backendServer } from '#src/common/configs/config';
 
 export class GetTaskRdo {
   @ApiProperty()
@@ -18,6 +19,9 @@ export class GetTaskRdo {
 
   @ApiProperty({ nullable: true })
   readonly timeUntil?: string;
+
+  @ApiProperty()
+  readonly image?: string;
 
   @ApiProperty()
   readonly prize: number;
@@ -43,6 +47,9 @@ export class GetTaskRdo {
         timeUntil <= 0 ? `Выполнение задания окончено` : ms(timeUntil);
     }
 
+    this.image = task.image
+      ? `${backendServer.urlValue}/api/assets/${task.image.id}/file`
+      : undefined;
     this.prize = task.prize;
     this.type = task.type ? task.type : undefined;
 

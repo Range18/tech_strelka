@@ -39,6 +39,26 @@ export class AssetsController {
   //   return new GetFileRdo(await this.assetsService.upload(file, id, 'user'));
   // }
 
+  @ApiCreatedResponse({ type: GetFileRdo })
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/tasks/:id/assets')
+  async uploadTaskImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    return new GetFileRdo(await this.assetsService.upload(file, id, 'task'));
+  }
+
+  @ApiCreatedResponse({ type: GetFileRdo })
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/events/:id/assets')
+  async uploadEventImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    return new GetFileRdo(await this.assetsService.upload(file, id, 'event'));
+  }
+
   @Get('assets/:id/file')
   @Get('assets/:id/file')
   async GetImageStream(

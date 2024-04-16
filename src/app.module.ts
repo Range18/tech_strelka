@@ -13,6 +13,7 @@ import { AssetsModule } from '#src/core/assets/assets.module';
 import { TaskType } from '#src/core/task-types/entities/task-type.entity';
 import { TaskTypesModule } from '#src/core/task-types/task-types.module';
 import { LevelsModule } from '#src/core/levels/levels.module';
+import { EventsModule } from '#src/core/events/events.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LevelsModule } from '#src/core/levels/levels.module';
     TaskType,
     TaskTypesModule,
     LevelsModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

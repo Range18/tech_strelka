@@ -10,7 +10,7 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetEventRdo } from '#src/core/events/rdo/get-event.rdo';
 
 @ApiTags('Events')
@@ -18,7 +18,7 @@ import { GetEventRdo } from '#src/core/events/rdo/get-event.rdo';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
-  @ApiBody({ type: GetEventRdo })
+  @ApiResponse({ type: GetEventRdo })
   @Post()
   async create(@Body() createEventDto: CreateEventDto) {
     return new GetEventRdo(
@@ -29,28 +29,28 @@ export class EventsController {
     );
   }
 
-  @ApiBody({ type: [GetEventRdo] })
+  @ApiResponse({ type: [GetEventRdo] })
   @Get()
   async findAll() {
     const events = await this.eventsService.find({
-      relations: { level: true },
+      relations: { level: true, image: true },
     });
 
     return events.map((event) => new GetEventRdo(event));
   }
 
-  @ApiBody({ type: GetEventRdo })
+  @ApiResponse({ type: GetEventRdo })
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return new GetEventRdo(
       await this.eventsService.findOne({
         where: { id },
-        relations: { level: true },
+        relations: { level: true, image: true },
       }),
     );
   }
 
-  @ApiBody({ type: GetEventRdo })
+  @ApiResponse({ type: GetEventRdo })
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -58,7 +58,7 @@ export class EventsController {
   ) {
     return new GetEventRdo(
       await this.eventsService.updateOne(
-        { where: { id }, relations: { level: true } },
+        { where: { id }, relations: { level: true, image: true } },
         updateEventDto,
       ),
     );

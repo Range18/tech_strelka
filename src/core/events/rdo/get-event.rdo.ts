@@ -1,7 +1,7 @@
 import { Event } from '#src/core/events/entities/event.entity';
-import { AssetEntity } from '#src/core/assets/entities/asset.entity';
-import { Level } from '#src/core/levels/entities/level.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { GetLevelRdo } from '#src/core/levels/dto/get-level.rdo';
+import { backendServer } from '#src/common/configs/config';
 
 export class GetEventRdo {
   @ApiProperty()
@@ -14,10 +14,10 @@ export class GetEventRdo {
   expireAt: Date;
 
   @ApiProperty()
-  image?: AssetEntity;
+  image?: string;
 
-  @ApiProperty()
-  level?: Level;
+  @ApiProperty({ type: GetLevelRdo })
+  level?: GetLevelRdo;
 
   @ApiProperty()
   name: string;
@@ -37,7 +37,10 @@ export class GetEventRdo {
     this.description = event.description;
     this.prize = event.prize;
     this.expireAt = event.expireAt;
-    this.level = event.level;
+    this.image = event.image
+      ? `${backendServer.urlValue}/api/assets/${event.image.id}/file`
+      : undefined;
+    this.level = event.level ? new GetLevelRdo(event.level) : undefined;
 
     this.updatedAt = event.updatedAt;
     this.createdAt = event.createdAt;

@@ -29,7 +29,7 @@ export class TasksController {
   async findAll(@Query('typeId') typeId: number) {
     const tasks = await this.tasksService.find({
       where: { type: typeId ? { id: typeId } : undefined },
-      relations: { type: true, usersProgress: true },
+      relations: { type: true, usersProgress: true, image: true },
     });
 
     return tasks.map((task) => new GetTaskRdo(task));
@@ -40,7 +40,7 @@ export class TasksController {
     return new GetTaskRdo(
       await this.tasksService.findOne({
         where: { id },
-        relations: { type: true, usersProgress: true },
+        relations: { type: true, usersProgress: true, image: true },
       }),
     );
   }
@@ -49,7 +49,10 @@ export class TasksController {
   async update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
     return new GetTaskRdo(
       await this.tasksService.updateOne(
-        { where: { id }, relations: { type: true, usersProgress: true } },
+        {
+          where: { id },
+          relations: { type: true, usersProgress: true, image: true },
+        },
         updateTaskDto,
       ),
     );

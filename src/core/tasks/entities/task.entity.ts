@@ -4,12 +4,14 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '#src/common/base.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 import { TaskType } from '#src/core/task-types/entities/task-type.entity';
 import { Level } from '#src/core/levels/entities/level.entity';
+import { AssetEntity } from '#src/core/assets/entities/asset.entity';
 
 @Entity('tasks')
 export class Task extends BaseEntity {
@@ -47,4 +49,11 @@ export class Task extends BaseEntity {
   })
   @JoinColumn({ name: 'level' })
   level?: Level;
+
+  @OneToOne(() => AssetEntity, (image) => image.task, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'image' })
+  image?: AssetEntity;
 }

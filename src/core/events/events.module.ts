@@ -21,5 +21,6 @@ import { AssetEntity } from '#src/core/assets/entities/asset.entity';
   ],
   controllers: [EventsController],
   providers: [EventsService],
+  exports: [EventsService],
 })
 export class EventsModule {}

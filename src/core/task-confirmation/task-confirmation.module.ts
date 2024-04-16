@@ -8,6 +8,7 @@ import { UserEntity } from '#src/core/users/user.entity';
 import { AssetEntity } from '#src/core/assets/entities/asset.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { UserModule } from '#src/core/users/user.module';
+import { Level } from '#src/core/levels/entities/level.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UserModule } from '#src/core/users/user.module';
       UserEntity,
       AssetEntity,
       HouseEntity,
+      Level,
     ]),
     UserModule,
   ],

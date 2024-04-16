@@ -3,6 +3,7 @@ import { BaseEntity } from '#src/common/base.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
 import { Event } from '#src/core/events/entities/event.entity';
+import { Task } from '#src/core/tasks/entities/task.entity';
 
 @Entity('assets')
 export class AssetEntity extends BaseEntity {
@@ -40,6 +41,15 @@ export class AssetEntity extends BaseEntity {
   })
   confirmation?: TaskStatus;
 
-  @OneToOne(() => Event, (event) => event.image, { nullable: true })
-  event: Event;
+  @OneToOne(() => Event, (event) => event.image, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  event?: Event;
+
+  @OneToOne(() => Task, (task) => task.image, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  task?: Task;
 }

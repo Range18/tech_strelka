@@ -13,8 +13,14 @@ import { UserService } from '#src/core/users/user.service';
 import { AllExceptions } from '#src/common/exception-handler/exeption-types/all-exceptions';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { HousesService } from '#src/core/houses/houses.service';
+import { EventsService } from '#src/core/events/events.service';
+import { Event } from '#src/core/events/entities/event.entity';
+import { TasksService } from '#src/core/tasks/tasks.service';
+import { Task } from '#src/core/tasks/entities/task.entity';
 import StorageExceptions = AllExceptions.StorageExceptions;
 import HousesExceptions = AllExceptions.HousesExceptions;
+import EventExceptions = AllExceptions.EventExceptions;
+import TaskExceptions = AllExceptions.TaskExceptions;
 
 @Injectable()
 export class AssetsService extends BaseEntityService<
@@ -26,6 +32,8 @@ export class AssetsService extends BaseEntityService<
     private readonly assetsRepository: Repository<AssetEntity>,
     private readonly userService: UserService,
     private readonly houseService: HousesService,
+    private readonly eventsService: EventsService,
+    private readonly tasksService: TasksService,
   ) {
     super(
       assetsRepository,
@@ -37,8 +45,12 @@ export class AssetsService extends BaseEntityService<
     );
   }
 
-  async upload(file: Express.Multer.File, id: number, type: 'house' | 'user') {
-    let entity: HouseEntity;
+  async upload(
+    file: Express.Multer.File,
+    id: number,
+    type: 'house' | 'user' | 'event' | 'task',
+  ) {
+    let entity: HouseEntity | Event | Task;
 
     switch (type) {
       case 'house':
@@ -52,6 +64,38 @@ export class AssetsService extends BaseEntityService<
             HttpStatus.NOT_FOUND,
             'HousesExceptions',
             HousesExceptions.NotFound,
+          );
+        }
+
+        break;
+
+      case 'event':
+        entity = await this.eventsService.findOne({
+          where: { id },
+          relations: { image: true },
+        });
+
+        if (!entity) {
+          throw new ApiException(
+            HttpStatus.NOT_FOUND,
+            'EventExceptions',
+            EventExceptions.NotFound,
+          );
+        }
+
+        break;
+
+      case 'task':
+        entity = await this.tasksService.findOne({
+          where: { id },
+          relations: { image: true },
+        });
+
+        if (!entity) {
+          throw new ApiException(
+            HttpStatus.NOT_FOUND,
+            'TaskExceptions',
+            TaskExceptions.NotFound,
           );
         }
 
