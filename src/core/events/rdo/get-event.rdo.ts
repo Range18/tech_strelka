@@ -26,6 +26,9 @@ export class GetEventRdo {
   prize: number;
 
   @ApiProperty()
+  link: string;
+
+  @ApiProperty()
   readonly updatedAt: Date;
 
   @ApiProperty()
@@ -40,6 +43,7 @@ export class GetEventRdo {
     this.image = event.image
       ? `${backendServer.urlValue}/api/assets/${event.image.id}/file`
       : undefined;
+    this.link = event.link;
     this.level = event.level ? new GetLevelRdo(event.level) : undefined;
 
     this.updatedAt = event.updatedAt;

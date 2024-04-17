@@ -11,6 +11,7 @@ import { BaseEntity } from '#src/common/base.entity';
 import { RolesEntity } from '#src/core/roles/entity/roles.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -31,6 +32,9 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ nullable: true })
+  class?: number;
 
   @Column({ nullable: false, default: 0 })
   points: number;
@@ -56,4 +60,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => TaskStatus, (status) => status.user, { nullable: true })
   tasksInProgress?: TaskStatus[];
+
+  @OneToMany(() => CustomTasksConfirmation, (task) => task.user, {
+    nullable: true,
+  })
+  customConfirmations?: CustomTasksConfirmation[];
 }

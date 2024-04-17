@@ -10,7 +10,6 @@ import { UserEntity } from '#src/core/users/user.entity';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { AssetEntity } from '#src/core/assets/entities/asset.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
-import { Level } from '#src/core/levels/entities/level.entity';
 
 @Entity()
 export class TaskStatus {
@@ -22,12 +21,6 @@ export class TaskStatus {
   })
   @JoinColumn({ name: 'user' })
   user: UserEntity;
-  //If custom task
-  @Column({ nullable: true })
-  name?: string;
-
-  @ManyToOne(() => Level, (level) => level.confirmations, { nullable: true })
-  level?: Level;
 
   @ManyToOne(() => Task, (task) => task.usersProgress, { nullable: true })
   @JoinColumn({ name: 'task' })
@@ -38,7 +31,7 @@ export class TaskStatus {
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'asset' })
-  asset?: AssetEntity;
+  image?: AssetEntity;
 
   @ManyToOne(() => HouseEntity, (house) => house.confirmations, {
     nullable: false,

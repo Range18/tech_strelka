@@ -13,14 +13,17 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOkResponse({ type: [GetUserRdo] })
-  @ApiQuery({ name: 'property', description: 'Одно из полей user' })
+  @ApiQuery({ name: 'by', description: 'Одно из полей user' })
   @ApiQuery({ name: 'order', description: 'ASC, DESC' })
+  @ApiQuery({ name: 'houseId' })
   @Get()
   async getAllUsers(
-    @Query('by') property: string,
-    @Query('order') order: string,
+    @Query('by') property?: string,
+    @Query('houseId') houseId?: number,
+    @Query('order') order?: string,
   ) {
     const users = await this.userService.find({
+      where: { house: { id: houseId } },
       relations: {
         role: true,
         house: true,
@@ -75,8 +78,8 @@ export class UserController {
     schema: { format: 'Bearer ${AccessToken}' },
   })
   @AuthGuard()
-  @Patch()
-  async update(
+  @Patch('me')
+  async updateMe(
     @User() user: UserRequest,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -104,5 +107,50 @@ export class UserController {
         relations: { role: true, house: { image: true } },
       }),
     );
+  }
+
+  @ApiOkResponse({ type: GetUserRdo })
+  @ApiHeader({
+    name: 'Authorization',
+    required: true,
+    schema: { format: 'Bearer ${AccessToken}' },
+  })
+  @ApiQuery({ name: 'id' })
+  @AuthGuard()
+  @Patch()
+  async update(@Query('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    await this.userService.updateOne(
+      {
+        where: { id: id },
+        relations: { role: true, house: true },
+      },
+      {
+        firstname: updateUserDto.firstname,
+        surname: updateUserDto.surname,
+        lastname: updateUserDto.lastname,
+        login: updateUserDto.login,
+        role: updateUserDto.role ? { id: updateUserDto.role } : undefined,
+        password: updateUserDto.password,
+        house: updateUserDto.houseId
+          ? { id: updateUserDto.houseId }
+          : undefined,
+      },
+    );
+
+    return new GetUserRdo(
+      await this.userService.findOne({
+        where: { id: id },
+        relations: { role: true, house: { image: true } },
+      }),
+    );
+  }
+
+  @ApiOkResponse({ type: [GetUserRdo] })
+  @AuthGuard()
+  @Get('house/rating')
+  async getHouseRating(@User() user: UserRequest) {
+    const users = await this.userService.getHouseRating(user.id);
+
+    return users.map((user) => new GetUserRdo(user));
   }
 }

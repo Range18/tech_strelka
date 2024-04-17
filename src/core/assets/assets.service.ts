@@ -17,10 +17,15 @@ import { EventsService } from '#src/core/events/events.service';
 import { Event } from '#src/core/events/entities/event.entity';
 import { TasksService } from '#src/core/tasks/tasks.service';
 import { Task } from '#src/core/tasks/entities/task.entity';
+import { TaskConfirmationService } from '#src/core/task-confirmation/task-confirmation.service';
+import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { CustomConfirmationService } from '#src/core/task-confirmation/custom-tasks.service';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 import StorageExceptions = AllExceptions.StorageExceptions;
 import HousesExceptions = AllExceptions.HousesExceptions;
 import EventExceptions = AllExceptions.EventExceptions;
 import TaskExceptions = AllExceptions.TaskExceptions;
+import StatusExceptions = AllExceptions.StatusExceptions;
 
 @Injectable()
 export class AssetsService extends BaseEntityService<
@@ -34,6 +39,8 @@ export class AssetsService extends BaseEntityService<
     private readonly houseService: HousesService,
     private readonly eventsService: EventsService,
     private readonly tasksService: TasksService,
+    private readonly tasksConfirmService: TaskConfirmationService,
+    private readonly customConfirmationService: CustomConfirmationService,
   ) {
     super(
       assetsRepository,
@@ -48,9 +55,14 @@ export class AssetsService extends BaseEntityService<
   async upload(
     file: Express.Multer.File,
     id: number,
-    type: 'house' | 'user' | 'event' | 'task',
+    type: 'house' | 'user' | 'event' | 'task' | 'confirm' | 'customConfirm',
   ) {
-    let entity: HouseEntity | Event | Task;
+    let entity:
+      | HouseEntity
+      | Event
+      | Task
+      | TaskStatus
+      | CustomTasksConfirmation;
 
     switch (type) {
       case 'house':
@@ -96,6 +108,38 @@ export class AssetsService extends BaseEntityService<
             HttpStatus.NOT_FOUND,
             'TaskExceptions',
             TaskExceptions.NotFound,
+          );
+        }
+
+        break;
+
+      case 'confirm':
+        entity = await this.tasksConfirmService.findOne({
+          where: { id },
+          relations: { user: true, house: true, task: true },
+        });
+
+        if (!entity) {
+          throw new ApiException(
+            HttpStatus.NOT_FOUND,
+            'StatusExceptions',
+            StatusExceptions.NotFound,
+          );
+        }
+
+        break;
+
+      case 'customConfirm':
+        entity = await this.customConfirmationService.findOne({
+          where: { id },
+          relations: { user: true, house: true },
+        });
+
+        if (!entity) {
+          throw new ApiException(
+            HttpStatus.NOT_FOUND,
+            'StatusExceptions',
+            StatusExceptions.NotFound,
           );
         }
 

@@ -10,6 +10,7 @@ import { UserEntity } from '#src/core/users/user.entity';
 import { BaseEntity } from '#src/common/base.entity';
 import { AssetEntity } from '#src/core/assets/entities/asset.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 
 @Entity('houses')
 export class HouseEntity extends BaseEntity {
@@ -39,7 +40,13 @@ export class HouseEntity extends BaseEntity {
 
   @OneToOne(() => AssetEntity, (image) => image.house, {
     nullable: true,
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'image' })
   image?: AssetEntity;
+
+  @OneToMany(() => CustomTasksConfirmation, (task) => task.house, {
+    nullable: true,
+  })
+  customConfirmations?: CustomTasksConfirmation[];
 }

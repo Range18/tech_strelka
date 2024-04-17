@@ -6,9 +6,18 @@ import { Level } from '#src/core/levels/entities/level.entity';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { Event } from '#src/core/events/entities/event.entity';
 import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Level, Task, Event, TaskStatus])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Level,
+      Task,
+      Event,
+      TaskStatus,
+      CustomTasksConfirmation,
+    ]),
+  ],
   controllers: [LevelsController],
   providers: [LevelsService],
 })

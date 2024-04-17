@@ -42,7 +42,7 @@ export class GetTaskRdo {
     this.expireAt = task.expireAt;
 
     if (task.expireAt) {
-      const timeUntil = task.expireAt.getTime() - Date.now();
+      const timeUntil = new Date(task.expireAt).getTime() - Date.now();
       this.timeUntil =
         timeUntil <= 0 ? `Выполнение задания окончено` : ms(timeUntil);
     }

@@ -26,6 +26,9 @@ export class GetUserRdo {
   readonly house?: GetHouseRdo;
 
   @ApiProperty()
+  class: number;
+
+  @ApiProperty()
   readonly points: number;
 
   @ApiProperty()
@@ -42,7 +45,7 @@ export class GetUserRdo {
     this.login = user.login;
     this.role = user.role;
     this.house = user.house ? new GetHouseRdo(user.house) : undefined;
-
+    this.class = user.class;
     this.points = user.points;
 
     this.updatedAt = user.updatedAt;

@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Event } from '#src/core/events/entities/event.entity';
 import { Task } from '#src/core/tasks/entities/task.entity';
-import { TaskStatus } from '#src/core/task-confirmation/entities/task-confirmation.entity';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 
 @Entity()
 export class Level {
@@ -23,8 +23,8 @@ export class Level {
   })
   tasks?: Task[];
 
-  @OneToMany(() => TaskStatus, (customTask) => customTask.level, {
+  @OneToMany(() => CustomTasksConfirmation, (task) => task.level, {
     nullable: true,
   })
-  confirmations?: TaskStatus[];
+  customConfirmations?: CustomTasksConfirmation[];
 }

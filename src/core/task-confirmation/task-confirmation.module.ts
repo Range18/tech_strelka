@@ -9,6 +9,12 @@ import { AssetEntity } from '#src/core/assets/entities/asset.entity';
 import { HouseEntity } from '#src/core/houses/entity/house.entity';
 import { UserModule } from '#src/core/users/user.module';
 import { Level } from '#src/core/levels/entities/level.entity';
+import { TasksModule } from '#src/core/tasks/tasks.module';
+import { SessionModule } from '#src/core/session/session.module';
+import { TokenModule } from '#src/core/token/token.module';
+import { HousesModule } from '#src/core/houses/houses.module';
+import { CustomConfirmationService } from '#src/core/task-confirmation/custom-tasks.service';
+import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/custom-tasks.entity';
 
 @Module({
   imports: [
@@ -19,10 +25,16 @@ import { Level } from '#src/core/levels/entities/level.entity';
       AssetEntity,
       HouseEntity,
       Level,
+      CustomTasksConfirmation,
     ]),
+    TasksModule,
+    SessionModule,
+    TokenModule,
     UserModule,
+    HousesModule,
   ],
   controllers: [TaskConfirmationController],
-  providers: [TaskConfirmationService],
+  providers: [TaskConfirmationService, CustomConfirmationService],
+  exports: [TaskConfirmationService],
 })
 export class TaskConfirmationModule {}

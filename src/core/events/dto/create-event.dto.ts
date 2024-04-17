@@ -14,5 +14,8 @@ export class CreateEventDto {
   name: string;
 
   @ApiProperty()
+  link: string;
+
+  @ApiProperty()
   prize: number;
 }

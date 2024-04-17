@@ -12,6 +12,7 @@ import { HousesModule } from '#src/core/houses/houses.module';
 import { Task } from '#src/core/tasks/entities/task.entity';
 import { EventsModule } from '#src/core/events/events.module';
 import { TasksModule } from '#src/core/tasks/tasks.module';
+import { TaskConfirmationModule } from '#src/core/task-confirmation/task-confirmation.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TasksModule } from '#src/core/tasks/tasks.module';
     UserModule,
     EventsModule,
     TasksModule,
+    TaskConfirmationModule,
   ],
   controllers: [AssetsController],
   providers: [AssetsService],

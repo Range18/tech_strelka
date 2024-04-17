@@ -22,7 +22,7 @@ export class AssetsController {
   @ApiCreatedResponse({ type: GetFileRdo })
   @UseInterceptors(FileInterceptor('file'))
   @Post('/houses/:id/assets')
-  async uploadSectionImage(
+  async uploadHouseImage(
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: number,
   ) {
@@ -57,6 +57,28 @@ export class AssetsController {
     @Param('id') id: number,
   ) {
     return new GetFileRdo(await this.assetsService.upload(file, id, 'event'));
+  }
+
+  @ApiCreatedResponse({ type: GetFileRdo })
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/task-confirmations/:id/assets')
+  async uploadConfirmImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    return new GetFileRdo(await this.assetsService.upload(file, id, 'confirm'));
+  }
+
+  @ApiCreatedResponse({ type: GetFileRdo })
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/custom-task-confirmations/:id/assets')
+  async uploadCustomConfirmImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    return new GetFileRdo(
+      await this.assetsService.upload(file, id, 'customConfirm'),
+    );
   }
 
   @Get('assets/:id/file')

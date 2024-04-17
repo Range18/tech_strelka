@@ -37,4 +37,7 @@ export class Event extends BaseEntity {
   })
   @JoinColumn({ name: 'image' })
   image?: AssetEntity;
+
+  @Column({ nullable: true })
+  link?: string;
 }
