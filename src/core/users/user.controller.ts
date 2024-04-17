@@ -6,6 +6,7 @@ import { type UserRequest } from '#src/common/types/user-request.type';
 import { User } from '#src/common/decorators/User.decorator';
 import { AuthGuard } from '#src/common/decorators/guards/authGuard.decorator';
 import { UpdateUserDto } from '#src/core/users/dto/update-user.dto';
+import { IsNull } from 'typeorm';
 
 @ApiTags('users')
 @Controller('api/users')
@@ -19,11 +20,13 @@ export class UserController {
   @Get()
   async getAllUsers(
     @Query('by') property?: string,
-    @Query('houseId') houseId?: number,
+    @Query('houseId') houseId?: number | string,
     @Query('order') order?: string,
   ) {
     const users = await this.userService.find({
-      where: { house: { id: houseId } },
+      where: {
+        house: houseId !== 'null' ? { id: Number(houseId) } : IsNull(),
+      },
       relations: {
         role: true,
         house: true,
@@ -143,6 +146,15 @@ export class UserController {
         relations: { role: true, house: { image: true } },
       }),
     );
+  }
+
+  @Patch('removeHouse')
+  async removeFromHouse(@Query('id') id: number) {
+    const user = await this.userService.findOne({ where: { id } });
+
+    user.house = null;
+
+    return await this.userService.save(user);
   }
 
   @ApiOkResponse({ type: [GetUserRdo] })

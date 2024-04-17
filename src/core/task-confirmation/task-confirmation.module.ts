@@ -35,6 +35,6 @@ import { CustomTasksConfirmation } from '#src/core/task-confirmation/entities/cu
   ],
   controllers: [TaskConfirmationController],
   providers: [TaskConfirmationService, CustomConfirmationService],
-  exports: [TaskConfirmationService],
+  exports: [TaskConfirmationService, CustomConfirmationService],
 })
 export class TaskConfirmationModule {}
